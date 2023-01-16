@@ -2,6 +2,10 @@
   "name": "@canonpalmier/data-grid",
   "version": "1.0.0",
   "description": "Data grid component built on React and Mantine.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/canonpalmier/data-grid"
+  },
   "author": "canonpalmier",
   "license": "ISC",
   "source": "src/index.ts",
