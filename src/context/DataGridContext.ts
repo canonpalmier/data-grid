@@ -1,13 +1,13 @@
-import * as TanStack from "@tanstack/react-table";
-import * as React from "react";
+import { Table } from "@tanstack/react-table";
+import { createContext } from "react";
 
 /** Properties that compose data grid context. */
-export interface DataGridContextProps {
+interface DataGridContextProps {
   /** TanStack table instance. */
-  table: TanStack.Table<any>;
+  table: Table<any>;
 }
 
 /** Context to manage data grid values. */
-const DataGridContext = React.createContext<DataGridContextProps | null>(null);
+const DataGridContext = createContext<DataGridContextProps | null>(null);
 
-export default DataGridContext;
+export { DataGridContext, DataGridContextProps };

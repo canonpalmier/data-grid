@@ -1,7 +1,15 @@
-import * as TanStack from "@tanstack/react-table";
-import * as React from "react";
+import { ColumnDef } from "@tanstack/react-table";
+import { useReactTable } from "@tanstack/react-table";
+import { getCoreRowModel } from "@tanstack/react-table";
+import { getFilteredRowModel } from "@tanstack/react-table";
+import { getFacetedRowModel } from "@tanstack/react-table";
+import { getFacetedUniqueValues } from "@tanstack/react-table";
+import { getSortedRowModel } from "@tanstack/react-table";
+import { getExpandedRowModel } from "@tanstack/react-table";
+import { getGroupedRowModel } from "@tanstack/react-table";
+import { ReactNode } from "react";
 
-import DataGridContext from "./DataGridContext";
+import { DataGridContext } from "./DataGridContext";
 
 /** Properties to create a data grid instance. */
 interface DataGridProviderProps<T> {
@@ -9,22 +17,22 @@ interface DataGridProviderProps<T> {
   dataCollection: T[];
 
   /** Column settings. */
-  columns: TanStack.ColumnDef<T>[];
+  columns: ColumnDef<T>[];
 
   /** Data grid canvas. */
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 /** Context wrapper for data grid values, initializes table. */
 function DataGridProvider<T>(props: DataGridProviderProps<T>) {
-  const table = TanStack.useReactTable({
-    getCoreRowModel: TanStack.getCoreRowModel(),
-    getFilteredRowModel: TanStack.getFilteredRowModel(),
-    getFacetedRowModel: TanStack.getFacetedRowModel(),
-    getFacetedUniqueValues: TanStack.getFacetedUniqueValues(),
-    getSortedRowModel: TanStack.getSortedRowModel(),
-    getExpandedRowModel: TanStack.getExpandedRowModel(),
-    getGroupedRowModel: TanStack.getGroupedRowModel(),
+  const table = useReactTable({
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    getSortedRowModel: getSortedRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
+    getGroupedRowModel: getGroupedRowModel(),
     data: props.dataCollection,
     columns: props.columns,
   });
@@ -36,4 +44,4 @@ function DataGridProvider<T>(props: DataGridProviderProps<T>) {
   );
 }
 
-export default DataGridProvider;
+export { DataGridProvider };

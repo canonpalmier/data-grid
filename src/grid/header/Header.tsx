@@ -1,46 +1,52 @@
-import * as Mantine from "@mantine/core";
-import * as TanStack from "@tanstack/react-table";
-import * as Icon from "react-feather";
+import { Sx } from "@mantine/core";
+import { UnstyledButton } from "@mantine/core";
+import { Header } from "@tanstack/react-table";
+import { ArrowDown } from "react-feather";
+import { ArrowUp } from "react-feather";
 
-import useHeader from "./useHeader";
-import useHeaderStyles from "./useHeaderStyles";
+import { HeaderUtils } from "./HeaderUtils";
 
 /** Properties to render a header. */
 interface HeaderProps<T, V> {
   /** Header instance. */
-  header: TanStack.Header<T, V>;
+  header: Header<T, V>;
 }
 
-/** Handles render for headers. */
 function Header<T, V>(props: HeaderProps<T, V>) {
-  const header = useHeader(props.header);
-  const styles = useHeaderStyles();
+  const utils = new HeaderUtils(props.header);
 
-  // prettier-ignore
-  if (!header.canSort) {
-    return (
-      <th colSpan={props.header.colSpan}>
-        {header.content}
-      </th>
-    );
+  if (!utils.canSort()) {
+    return <th colSpan={props.header.colSpan}>{utils.render()}</th>;
   }
 
   return (
-    <th colSpan={header.colSpan}>
-      <Mantine.UnstyledButton
-        className={styles.classes.sort}
-        onClick={header.handleSort}
-        data-active={header.isSorted || undefined}
+    <th colSpan={props.header.colSpan}>
+      <UnstyledButton
+        sx={buttonSx}
+        onClick={utils.handleSort()}
+        data-active={utils.isSorted()}
       >
-        {header.content}
-        {header.sortStatus === "asc" ? (
-          <Icon.ArrowDown size={13} />
-        ) : header.sortStatus === "desc" ? (
-          <Icon.ArrowUp size={13} />
-        ) : null}
-      </Mantine.UnstyledButton>
+        {utils.render()}
+        {utils.isSortedAsc() && <ArrowDown size={13} />}
+        {utils.isSortedDesc() && <ArrowUp size={13} />}
+      </UnstyledButton>
     </th>
   );
 }
 
-export default Header;
+const buttonSx: Sx = {
+  display: "flex",
+  alignItems: "center",
+  gap: 4,
+  fontSize: 12,
+  fontWeight: 500,
+  color: "#868E96",
+  ":hover": {
+    color: "#212529",
+  },
+  "&[data-active=true]": {
+    color: "#212529",
+  },
+};
+
+export { Header };

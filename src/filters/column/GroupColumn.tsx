@@ -1,34 +1,31 @@
-import * as Mantine from "@mantine/core";
-import * as TanStack from "@tanstack/react-table";
-import * as Icon from "react-feather";
+import { Group } from "@mantine/core";
+import { Menu } from "@mantine/core";
+import { Column } from "@tanstack/react-table";
+import { CheckSquare } from "react-feather";
+import { Square } from "react-feather";
 
-import useColumn from "./useColumn";
+import { ColumnUtils } from "./ColumnUtils";
 
 /** Properties to render a column group control. */
 interface GroupColumnProps<T, V> {
   /** Column instance. */
-  column: TanStack.Column<T, V>;
+  column: Column<T, V>;
 }
 
-/** Handles render for column group controls. */
 function GroupColumn<T, V>(props: GroupColumnProps<T, V>) {
-  const column = useColumn(props.column);
+  const utils = new ColumnUtils(props.column);
 
   // Ignore if column cannot group
-  if (!column.canGroup) return null;
+  if (!utils.canGroup()) return null;
 
   return (
-    <Mantine.Menu.Item onClick={column.handleGrouping}>
-      <Mantine.Group position="apart">
-        {column.content}
-        {column.isGrouped ? (
-          <Icon.CheckSquare size={14} />
-        ) : (
-          <Icon.Square size={14} />
-        )}
-      </Mantine.Group>
-    </Mantine.Menu.Item>
+    <Menu.Item onClick={utils.handleGrouping()}>
+      <Group position="apart">
+        {utils.render()}
+        {utils.isGrouped() ? <CheckSquare size={14} /> : <Square size={14} />}
+      </Group>
+    </Menu.Item>
   );
 }
 
-export default GroupColumn;
+export { GroupColumn };

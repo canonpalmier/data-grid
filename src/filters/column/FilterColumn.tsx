@@ -1,33 +1,30 @@
-import * as Mantine from "@mantine/core";
-import * as TanStack from "@tanstack/react-table";
+import { Select } from "@mantine/core";
+import { Column } from "@tanstack/react-table";
 
-import useColumn from "./useColumn";
+import { ColumnUtils } from "./ColumnUtils";
 
 /** Properties to render a column filter control. */
 interface FilterColumnProps<T, V> {
   /** Column instance. */
-  column: TanStack.Column<T, V>;
+  column: Column<T, V>;
 }
 
-/** Handles render for column filter controls. */
 function FilterColumn<T, V>(props: FilterColumnProps<T, V>) {
-  const column = useColumn(props.column);
+  const utils = new ColumnUtils(props.column);
 
   // Ignore if cannot filter
-  if (!column.canFilter) {
-    return null;
-  }
+  if (!utils.canFilter()) return null;
 
   return (
-    <Mantine.Select
+    <Select
       size="xs"
-      data={column.values}
-      placeholder={column.content}
-      onChange={column.handleFiltering}
+      data={utils.getValues()}
+      placeholder={utils.render()}
+      onChange={props.column.setFilterValue}
       clearable
       searchable
     />
   );
 }
 
-export default FilterColumn;
+export { FilterColumn };
